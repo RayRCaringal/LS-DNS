@@ -30,7 +30,7 @@ def run():
     
 #Creates Table 
 table = {}
-path = os.path.dirname(os.path.realpath('__file__')) + '\PROJ2-DNSTS1.txt'
+path = os.path.dirname(os.path.realpath('__file__')) + '/PROJ2-DNSTS1.txt'
 if os.path.isfile(path):
     with open(path, 'r') as f:
         for line in f:
