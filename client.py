@@ -28,7 +28,7 @@ lsHostname = sys.argv[1]
 lsListenPort = int(sys.argv[2])
 
 LS_addr = ""
-if lsHostname is "localhost":
+if lsHostname == "localhost":
     LS_addr = socket.gethostbyname(socket.gethostname())
 else:
     LS_addr = socket.gethostbyname(lsHostname)
@@ -43,7 +43,7 @@ msg = cs.recv(1024)
 print("[C]: Data received from server: {}".format(msg.decode('utf-8')))
 
 #Create the File Path as Read 
-path = os.path.dirname(os.path.realpath('__file__')) + '/PROJI2-HNS.txt'
+path = os.path.dirname(os.path.realpath('__file__')) + '/PROJ2-HNS.txt'
 if os.path.isfile(path):
     with open(path, 'r') as f:
         result = ""
@@ -56,7 +56,7 @@ if os.path.isfile(path):
             #Send Hostname to Load Balancing Server
             cs.send(address.encode('utf-8'))
             msg = cs.recv(1024).decode('utf-8') 
-            table = msg.split()
+            result += " " + msg + "\n"
 
             #Check For Results
 

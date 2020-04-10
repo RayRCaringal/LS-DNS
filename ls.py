@@ -2,7 +2,6 @@
 
 
 import sys
-import time
 import socket
 import threading
 
@@ -18,7 +17,7 @@ class vals:
 def inTS(hostName, sock):
     sock.send(hostName.encode('utf-8'))
     try:
-        msg = sock.recv()
+        msg = sock.recv(1024)
         return msg
     except socket.error as err:
         return "[NF]"
@@ -26,7 +25,7 @@ def inTS(hostName, sock):
 def run():
     clientsocket.send(msg.encode('utf-8'))
     EOF = 1
-    while EOF is not 0:
+    while EOF != 0:
         print("[LS]: Waiting on Client")
         reply = clientsocket.recv(1024)
         hostName = reply.decode('utf-8').rstrip()
@@ -37,18 +36,17 @@ def run():
             print("[LS]: Request from a client for hostname " + hostName)
             one = inTS(hostName, ls1)
             two = inTS(hostName, ls2)
-            if one is "[NF]" and two is "[NF]":
+            if one == "[NF]" and two == "[NF]":
                 print("[LS]: Hostname " + hostName + " not found returning error")
                 error = "Error:HOST NOT FOUND"
-                clientsocket.send(error.encode('f-8'))
-            elif one is "[NF]":
+                clientsocket.send(error.encode('utf-8'))
+            elif one == "[NF]":
                 clientsocket.send(two)
-            elif two is "[NF]":
+            elif two == "[NF]":
                 clientsocket.send(one)
 
-
-def isLocalHost(addr):
-    if addr is "localhost":
+def getHost(addr):
+    if addr == "localhost":
         return socket.gethostname()
     else:
         return addr
@@ -74,8 +72,8 @@ ts2HostName = sys.argv[4]
 ts1Port = (int(sys.argv[3]))
 ts2Port = (int(sys.argv[5]))
 
-TS1_addr = socket.getbyhostname(isLocalHost(ts1HostName))
-TS2_addr = socket.getbyhostname(isLocalHost(ts2HostName))
+TS1_addr = socket.gethostbyname(getHost(ts1HostName))
+TS2_addr = socket.gethostbyname(getHost(ts2HostName))
 
 ts1Server_binding = (TS1_addr, ts1Port)
 ts2Server_binding = (TS2_addr, ts2Port)
